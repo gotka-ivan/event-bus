@@ -13,7 +13,7 @@
 <script>
 import SecondChildrenComponent from './SecondChildrenComponent.vue'
 import ThirdChildrenComponent from './ThirdChildrenComponent.vue'
-import { updateCount, emitCount } from '../EventBus.js'
+import { countEvent } from '../EventBus.js'
 
 export default {
   name: 'App',
@@ -24,21 +24,23 @@ export default {
   data: () => {
     return {
       count: 0,
-      updateCount,
-      emitCount
+      countEvent
     }
   },
   created() {
-    this.updateCount(count => {
+    this.countEvent.update(count => {
       this.count = count
     })
   },
+  beforeDestroy() {
+    this.countEvent.destroy()
+  },
   methods: {
     increase() {
-      this.emitCount(this.count + 1)
+      this.countEvent.emit(this.count + 1)
     },
     decrease() {
-      this.emitCount(this.count - 1)
+      this.countEvent.emit(this.count - 1)
     }
   }
 }
